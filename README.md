@@ -4,6 +4,8 @@ Generate rounds of pairs with no repeating names within each round, and no repea
 
 ## Usage
 
-1. Updated names.csv with the names of participants, and include any unwanted pairings within unwantedpairs.csv in two columns.
+1. Update names.csv with the names of participants, and include any unwanted pairings in unwantedpairs.csv in two columns.
 
-1. Run code, which outputs pairs for each round such that everyone participates in each round.
+1. Run the code, which outputs pairs for each round such that everyone participates in each round.
+
+(factor within while loop on line 29 multiplying nrow(pairs) may be increased up to 1.0, generating more rounds but taking longer to run.)

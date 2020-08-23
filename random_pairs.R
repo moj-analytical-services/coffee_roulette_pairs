@@ -26,7 +26,7 @@ pairs <- pairs %>%
 
 # Generate sets of pairs in which names appear only once, and pairs are not repeated between sets
 k <- 1
-while(k < floor(0.9*nrow(pairs)/(nrow(names)/2))){
+while(k < floor(0.8*nrow(pairs)/(nrow(names)/2))){
 
   #randomise the pairs
   rpairs <- pairs %>% 
