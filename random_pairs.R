@@ -1,5 +1,9 @@
 library(tidyverse)
 
+if (compareVersion(as.character(packageVersion("dplyr")),"1.0.0") == -1 ) {
+  stop("Need minimum dplyr version of 1.0.0")
+}
+
 # input the list of names, of even length
 names <- read_csv("names.csv", col_names = FALSE) %>% 
   rename(Name = X1)
