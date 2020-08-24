@@ -1,7 +1,8 @@
 library(tidyverse)
 
 if (compareVersion(as.character(packageVersion("dplyr")),"1.0.0") == -1 ) {
-  stop("Need minimum dplyr version of 1.0.0")
+  warning("dplyr version must be at least 1.0.0")
+  update.packages("dplyr")
 }
 
 # input the list of names, of even length
