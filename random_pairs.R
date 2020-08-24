@@ -16,8 +16,8 @@ if(nrow(names) %% 2 != 0){
 }
 
 # generate all pairs
-pairs <- as_tibble(t(combn(pull(names), 2))) %>% 
-  rename(P1 = V1, P2 = V2)
+pairs <- as_tibble(t(combn(pull(names), 2)), .name_repair = "unique") %>% 
+  rename(P1 = ...1, P2 = ...2)
 
 # remove unwanted pairs
 
