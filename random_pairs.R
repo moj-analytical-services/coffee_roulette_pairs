@@ -15,14 +15,17 @@ pairs <- as_tibble(t(combn(pull(names), 2))) %>%
   rename(P1 = V1, P2 = V2)
 
 # remove unwanted pairs
-uwp <- read_csv("unwantedpairs.csv", col_names = FALSE) %>% 
-  rename(P1 = X1, P2=X2)
-ruwp <- uwp %>% 
-  rename(P2=P1,P1=P2)
-uwp <- uwp %>% 
-  bind_rows(ruwp)
-pairs <- pairs %>% 
-  anti_join(uwp, by=c("P1", "P2"))
+
+if (file.exists("unwantedpairs.csv")) {
+  uwp <- read_csv("unwantedpairs.csv", col_names = FALSE) %>% 
+    rename(P1 = X1, P2=X2)
+  ruwp <- uwp %>% 
+    rename(P2=P1,P1=P2)
+  uwp <- uwp %>% 
+    bind_rows(ruwp)
+  pairs <- pairs %>% 
+    anti_join(uwp, by=c("P1", "P2"))
+}
 
 # Generate sets of pairs in which names appear only once, and pairs are not repeated between sets
 k <- 1
