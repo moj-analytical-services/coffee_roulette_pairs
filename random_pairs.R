@@ -1,9 +1,17 @@
 library(tidyverse)
 
-# minimum version of tidyverse required
-if (compareVersion(as.character(packageVersion("tidyverse")),"1.3.0") == -1 ) {
-  warning("tidyverse version must be at least 1.3.0")
-  update.packages("tidyverse")
+# minimum version of tidyverse packages required
+if (compareVersion(as.character(packageVersion("dplyr")),"1.0.0") == -1 ) {
+  warning("tidyverse version must be at least 1.0.0")
+  update.packages("dplyr")
+}
+if (compareVersion(as.character(packageVersion("readr")),"1.3.1") == -1 ) {
+  warning("tidyverse version must be at least 1.3.1")
+  update.packages("readr")
+}
+if (compareVersion(as.character(packageVersion("tibble")),"3.0.1") == -1 ) {
+  warning("tidyverse version must be at least 3.0.1")
+  update.packages("tibble")
 }
 
 # input the list of names, of even length
