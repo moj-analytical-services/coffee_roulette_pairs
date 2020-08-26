@@ -1,8 +1,9 @@
 library(tidyverse)
 
-if (compareVersion(as.character(packageVersion("dplyr")),"1.0.0") == -1 ) {
-  warning("dplyr version must be at least 1.0.0")
-  update.packages("dplyr")
+# minimum version of tidyverse required
+if (compareVersion(as.character(packageVersion("tidyverse")),"1.3.0") == -1 ) {
+  warning("tidyverse version must be at least 1.3.0")
+  update.packages("tidyverse")
 }
 
 # input the list of names, of even length
@@ -20,7 +21,6 @@ pairs <- as_tibble(t(combn(pull(names), 2)), .name_repair = "unique") %>%
   rename(P1 = ...1, P2 = ...2)
 
 # remove unwanted pairs
-
 if (file.exists("unwantedpairs.csv")) {
   uwp <- read_csv("unwantedpairs.csv", col_names = FALSE) %>% 
     rename(P1 = X1, P2=X2)
