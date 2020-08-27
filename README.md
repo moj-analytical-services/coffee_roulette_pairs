@@ -8,4 +8,4 @@ Generate rounds of pairs with no repeating names within each round, and no repea
 
 1. Run the code, which outputs pairs for each round such that everyone participates in each round.
 
-(Numerical factor within while loop on line 32 multiplying nrow(pairs) should be < 1.0. Increasing it from its current value may generate more rounds, at the cost of longer execution times.)
+(Numerical factor within while loop multiplying nrow(pairs) should be < 1.0. Increasing it from its current value (0.8) may generate more unique rounds, but at the cost of longer execution times.)
