@@ -11,7 +11,7 @@ if (compareVersion(as.character(packageVersion("tibble")),"3.0.1") == -1 ) {
   stop("tidyverse version must be at least 3.0.1")
 }
 
-# this parameter determines how rounds are output, and how long the code takes to complete. It takes values 0.0 < alpha < 1.0
+# this parameter determines how many rounds are output, and how long the code takes to complete. It takes values 0.0 < alpha < 1.0
 alpha <- 0.7
 
 # input the list of names, of even length
