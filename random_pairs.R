@@ -2,17 +2,18 @@ library(tidyverse)
 
 # minimum version of tidyverse packages required
 if (compareVersion(as.character(packageVersion("dplyr")),"1.0.0") == -1 ) {
-  stop("tidyverse version must be at least 1.0.0")
+  stop("dplyr version must be at least 1.0.0, please update")
 }
 if (compareVersion(as.character(packageVersion("readr")),"1.3.1") == -1 ) {
-  stop("tidyverse version must be at least 1.3.1")
+  stop("readr version must be at least 1.3.1, please update")
 }
 if (compareVersion(as.character(packageVersion("tibble")),"3.0.1") == -1 ) {
-  stop("tidyverse version must be at least 3.0.1")
+  stop("tibble version must be at least 3.0.1, please update")
 }
 
-# this parameter determines how many rounds are output, and how long the code takes to complete. It takes values 0.0 < alpha < 1.0
-alpha <- 0.7
+# This parameter determines how many rounds are output, and how long the code takes to complete. 
+# It can take values in the range 0.0 < alpha < 1.0
+alpha <- 0.6
 
 # input the list of names, of even length
 names <- read_csv("names.csv", col_names = FALSE) %>% 
