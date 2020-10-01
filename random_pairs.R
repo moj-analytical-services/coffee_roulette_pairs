@@ -79,7 +79,7 @@ while(k < floor(alpha*nrow(pairs)/(nrow(names)/2))){
 
     # If there are sufficient names in the store for a single round, print out the pairs
     if(nrow(store)==(nrow(names)/2)){
-      write_csv(store, paste0("Round", k,".csv"))
+      write_csv(store, paste0("Round_", stringr::str_pad(k,2, side="left", pad="0"),".csv"))
       k <- k + 1
       # remove these pairs printed out from rpairs, so that they don't appear again
       rpairs <- rpairs %>% 
