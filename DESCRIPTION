@@ -19,3 +19,5 @@ Imports:
     readr,
     tibble,
     utils
+Suggests: 
+    testthat

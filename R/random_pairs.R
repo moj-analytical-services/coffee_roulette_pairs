@@ -1,6 +1,25 @@
 utils::globalVariables(c("P1", "P2"))
 
 
+#' Randomly pair up a group of people
+#'
+#' Given a list of people's names, pair them up with each other randomly so that each person appears once, and write the
+#' pairs to a file. Also, append these pairs to an additional file, so that they won't be matched
+#' again if the function is rerun.
+#'
+#' @param filename csv file containing the list of people's names.
+#' @param unwantedpairs csv file containing pairs of names which you don't want to appear the next time the function is run.
+#'
+#' @return The function returns nothing, but saves a csv file containing the list of random pairs called `Round.csv`, and a csv
+#' file called `unwantedpairs.csv` containing pairs which you don't want to appear in future.
+#'
+#' @examples
+#' \dontrun{
+#' random_pairs(filename = 'names.csv', unwantedpairs = 'unwantedpairs.csv')
+#'}
+#'
+#' @export
+
 random_pairs <- function(filename = NULL, unwantedpairs = NULL){
 
   if (is.null(filename)) {

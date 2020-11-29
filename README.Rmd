@@ -1,0 +1,41 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# coffeeroulettepairs
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+Save time when organising a round of coffee roulette chats, in which people who sign up are paired up randomly with each other. The code ensure each person appears only once in a round. Provide a one column csv file containing a list of names, and if desired, a two column csv file containing pairs which you don't want to appear in the random matches. The functions writes a csv file called `Round.csv` containing the random pairs, and a two column csv file called `unwantedpairs.csv` containing the pairs which have just been matched, including any preexisiting pairs.
+
+## Installation
+
+You can install coffeeroulettepairs like so:
+
+``` r
+devtools::install_github("moj-analytical-services/coffee_roulette_pairs")
+```
+
+## Example
+
+
+```{r example}
+library(coffeeroulettepairs)
+filename <- system.file("extdata", "names.csv", package = "coffeeroulettepairs")
+unwantedpairs <- system.file("extdata", "unwantedpairs.csv", package = "coffeeroulettepairs")
+random_pairs(filename = filename, unwantedpairs = unwantedpairs)
+```
+
+
