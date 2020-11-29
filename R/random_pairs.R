@@ -1,14 +1,14 @@
 utils::globalVariables(c("P1", "P2"))
 
 
-random_pairs <- function(file = NULL, unwantedpairs = NULL){
+random_pairs <- function(filename = NULL, unwantedpairs = NULL){
 
-  if (is.null(file)) {
+  if (is.null(filename)) {
     stop("Please supply the path to the csv file containing the list of coffee roulette participants")
   }
 
   # Import the list of names
-  names <- readr::read_csv(file, col_names = "name")
+  names <- readr::read_csv(filename, col_names = "name")
 
   # If not of even length, remove the first name from the list
   if(nrow(names) %% 2 != 0){
@@ -16,7 +16,7 @@ random_pairs <- function(file = NULL, unwantedpairs = NULL){
     names <- dplyr::slice(names, -1)
   }
 
-  # # Generate all possible pairs
+  # # Generate all unique pairs
   pairs <- tibble::tibble("P1" = t(utils::combn(names$name, 2))[,1], "P2" = t(utils::combn(names$name, 2))[,2])
 
   # Remove unwanted pairs, if required
@@ -27,6 +27,43 @@ random_pairs <- function(file = NULL, unwantedpairs = NULL){
     pairs <- dplyr::anti_join(pairs, uwp, by=c("P1", "P2"))
   }
 
+  # Randomise the pairs
+  rpairs <- dplyr::slice_sample(pairs, n = nrow(pairs))
 
+  # Add the first pair to the store
+  store <- dplyr::slice_head(rpairs)
+
+  # Pairs per round
+  ppr <- nrow(names)/2
+
+  # Counts the number of pairs added to store
+  k <- 1
+
+  # Going though each pair in rpairs, only add it to the store if each name in the pair is not already present in any pair in the store
+  for (i in seq(nrow(rpairs))){
+
+    if ((!rpairs$P1[i] %in% store$P1) & (!rpairs$P1[i] %in% store$P2) & (!rpairs$P2[i] %in% store$P1) & (!rpairs$P2[i] %in% store$P2)) {
+
+          store <- dplyr::bind_rows(store, rpairs[i,1:2])
+          k <- k + 1
+    }
+
+    # If the number of pairs for a round have been store, write out the pairs, and break the loop
+    if (k == ppr){
+
+      readr::write_csv(store, paste0("Round.csv"))
+      break
+
+    }
+
+  }
+
+  # Update the list of unwanted pairs with those already generated, and update unwantedpairs.csv
+  if (!is.null(unwantedpairs)) {
+    readr::write_csv(store, unwantedpairs, append = TRUE)
+  } else {
+
+    readr::write_csv(store, "unwantedpairs.csv", append = TRUE)
+  }
 
 }
