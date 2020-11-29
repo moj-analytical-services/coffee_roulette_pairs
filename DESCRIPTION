@@ -1,0 +1,23 @@
+Package: coffeeroulettepairs
+Title: Generates randomised pairs of names from a list of names
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Marco",
+           family = "Surace",
+           email = "marco.surace@justice.gov.uk",
+           role = c("aut", "cre"))
+Description: Given a list of names, and if desired pairs that you do not want to be generated, this package
+    randomly pairs the names so that everyone has a partner, and no name appears more than once. It then writes 
+    out the pairs, and adds the pairs which have been generated to a list of unwanted pairs.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    dplyr (>= 1.0.0),
+    readr,
+    tibble,
+    utils
+Suggests: 
+    testthat
