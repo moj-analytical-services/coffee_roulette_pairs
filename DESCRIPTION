@@ -1,13 +1,14 @@
 Package: coffeeroulettepairs
-Title: What the Package Does (One Line, Title Case)
+Title: Generates randomised pairs of names from a list of names
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person(given = "Marco",
+           family = "Surace",
+           email = "marco.surace@justice.gov.uk",
+           role = c("aut", "cre"))
+Description: Given a list of names, and if desired pairs that you do not want to be generated, this package
+    randomly pairs the names so that everyone has a partner, and no name appears more than once. It then writes 
+    out the pairs, and adds the pairs which have been generated to a list of unwanted pairs.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
