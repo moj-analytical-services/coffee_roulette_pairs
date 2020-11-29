@@ -28,6 +28,9 @@ devtools::install_github("moj-analytical-services/coffee_roulette_pairs")
 
 ## Example
 
+You can find an example list of names and unwanted pairs in
+`inst/extsata`.
+
 ``` r
 library(coffeeroulettepairs)
 filename <- system.file("extdata", "names.csv", package = "coffeeroulettepairs")
