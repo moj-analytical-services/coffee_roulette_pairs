@@ -9,13 +9,14 @@
 
 Save time when organising a round of coffee roulette chats, in which
 people who sign up are paired up randomly with each other. The code
-ensure each person appears only once in a round. Provide a one column
-csv file containing a list of names, and if desired, a two column csv
-file containing pairs which you don’t want to appear in the random
-matches. The functions writes a csv file called `Round.csv` containing
-the random pairs, and a two column csv file called `unwantedpairs.csv`
-containing the pairs which have just been matched, including any
-preexisiting pairs.
+geneates the random pairs for you, and ensures each person appears only
+once in a single round. Provide a one column csv file containing a list
+of names, and if desired, a two column csv file containing pairs which
+you don’t want to appear in the random matches. The function
+`random_pairs` writes a csv file called `Round.csv` containing the
+random pairs, and a two column csv file called `unwantedpairs.csv`
+containing the pairs which have just been matched, in addition to any
+pre-exisiting pairs.
 
 ## Installation
 
