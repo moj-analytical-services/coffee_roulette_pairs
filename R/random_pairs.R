@@ -22,9 +22,20 @@ utils::globalVariables(c("P1", "P2"))
 
 random_pairs <- function(filename = NULL, unwantedpairs = NULL){
 
+  # Checks on input
+
   if (is.null(filename)) {
     stop("Please supply the path to the csv file containing the list of coffee roulette participants")
   }
+
+  if (!is.character(filename)) {
+    stop("Please supply the the path to the csv file containing the list of coffee roulette participants as a string")
+  }
+
+  # Prints current working directory
+  message(paste0("Your current working directory is: ", getwd(), ". Round.csv will be saved there."))
+
+  # Import files
 
   # Import the list of names
   names <- readr::read_csv(filename, col_names = "name")
@@ -34,6 +45,8 @@ random_pairs <- function(filename = NULL, unwantedpairs = NULL){
     warning(paste("Odd number of names! Removed the first name, i.e.", names[1,1]))
     names <- dplyr::slice(names, -1)
   }
+
+  ## MAIN BODY -----------------------------------------------------------------------------------------------------------
 
   # # Generate all unique pairs
   pairs <- tibble::tibble("P1" = t(utils::combn(names$name, 2))[,1], "P2" = t(utils::combn(names$name, 2))[,2])
@@ -67,22 +80,42 @@ random_pairs <- function(filename = NULL, unwantedpairs = NULL){
           k <- k + 1
     }
 
-    # If the number of pairs for a round have been store, write out the pairs, and break the loop
+    # If the number of pairs for a complete round have been stored, write out the pairs, and break the loop
     if (k == ppr){
 
       readr::write_csv(store, paste0("Round.csv"))
+      if (file.exists("Round.csv")) {
+
+        message("Round.csv was saved in your current working directory.")
+
+      } else {
+
+        warning("Round.csv was not saved.")
+
+      }
       break
 
     }
 
   }
 
-  # Update the list of unwanted pairs with those already generated, and update unwantedpairs.csv
+  # Update the list of unwanted pairs with those already generated
   if (!is.null(unwantedpairs)) {
+
     readr::write_csv(store, unwantedpairs, append = TRUE)
+    message("The file containing unwanted pairs was updated.")
+
   } else {
 
     readr::write_csv(store, "unwantedpairs.csv", append = TRUE)
+    if (file.exists("unwantedpairs.csv")) {
+
+      message("unwantedpairs.csv was saved in your current working directory.")
+    } else{
+
+      warning("unwantedpairs.csv was not saved.")
+    }
+
   }
 
 }
