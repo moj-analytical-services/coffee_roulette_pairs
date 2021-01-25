@@ -24,7 +24,8 @@ devtools::install_github("moj-analytical-services/coffee_roulette_pairs")
 
   - Create a one column csv file containing the list of names, and if
     required a two column csv file containing pairs which you don’t want
-    to appear in the random matches.
+    to appear in the random matches. Ensure the file containing the
+    unwanted pairs ends with a new line.
   - Run the function `random_pairs`, which writes a new csv file called
     `Round.csv` containing the random pairs, and updates or creates a
     two column csv file called `unwantedpairs.csv`, containing the pairs
@@ -50,20 +51,26 @@ uwp <- system.file("extdata", "unwantedpairs.csv", package = "coffeeroulettepair
 
 # Run the random_pairs function. NB the output will be saved in your current working directory
 random_pairs(filename = names, unwantedpairs = uwp)
-#> Your current working directory is: /home/ms130/Misc/coffeeroulettepairs. Round.csv will be saved there.
+#> Your current working directory is: /home/ms130/Misc/coffee_roulette_pairs. 'Round.csv' will be saved there.
 #> 
 #> ── Column specification ────────────────────────────────────────────────────────
 #> cols(
 #>   name = col_character()
 #> )
-#> Warning in random_pairs(filename = names, unwantedpairs = uwp): Odd number of
-#> names! Removed the first name, i.e. Jack Jones
+#> Warning in random_pairs(filename = names, unwantedpairs = uwp): An odd number of
+#> names has been provided! The first name was ignored, i.e.Jack Jones
 #> 
 #> ── Column specification ────────────────────────────────────────────────────────
 #> cols(
 #>   P1 = col_character(),
 #>   P2 = col_character()
 #> )
-#> Round.csv was saved in your current working directory.
-#> The file containing unwanted pairs was updated.
+#> 'Round.csv' was saved in your current working directory.
+#> The following file containing unwanted pairs was updated: /tmp/RtmpW9J7Qq/temp_libpath20e633e4213a/coffeeroulettepairs/extdata/unwantedpairs.csv
+#> 
+#> ── Column specification ────────────────────────────────────────────────────────
+#> cols(
+#>   P1 = col_character(),
+#>   P2 = col_character()
+#> )
 ```
