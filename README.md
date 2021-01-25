@@ -26,9 +26,9 @@ devtools::install_github("moj-analytical-services/coffee_roulette_pairs")
     required a two column csv file containing pairs which you don’t want
     to appear in the random matches.
   - Run the function `random_pairs`, which writes a new csv file called
-    `Round.csv` containing the random pairs, and updates or crates a two
-    column csv file called `unwantedpairs.csv`, containing the pairs
-    which have just been matched, in addition to any pre-exisiting
+    `Round.csv` containing the random pairs, and updates or creates a
+    two column csv file called `unwantedpairs.csv`, containing the pairs
+    which have just been matched, in addition to any pre-existing
     unwanted pairs.
   - **NB the output file `Round.csv` will be saved in your current
     working directory.**
@@ -50,6 +50,7 @@ uwp <- system.file("extdata", "unwantedpairs.csv", package = "coffeeroulettepair
 
 # Run the random_pairs function. NB the output will be saved in your current working directory
 random_pairs(filename = names, unwantedpairs = uwp)
+#> Your current working directory is: /home/ms130/Misc/coffeeroulettepairs. Round.csv will be saved there.
 #> 
 #> ── Column specification ────────────────────────────────────────────────────────
 #> cols(
@@ -63,4 +64,6 @@ random_pairs(filename = names, unwantedpairs = uwp)
 #>   P1 = col_character(),
 #>   P2 = col_character()
 #> )
+#> Round.csv was saved in your current working directory.
+#> The file containing unwanted pairs was updated.
 ```
