@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-Save time when organising a round of coffee roulette chats, in which people who sign up are paired up randomly with each other! The code generates the random pairs for you, and ensures each person appears only once in a single round.
+Save time when organising a round of coffee roulette chats, in which people who sign up are paired up randomly with each other! The code generates the random pairs for you, and ensures each person appears only once per round.
 
 ## Installation
 
