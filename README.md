@@ -22,16 +22,13 @@ devtools::install_github("moj-analytical-services/coffee_roulette_pairs")
 ## Usage
 
 -   Create a one column csv file containing the list of names, and if
-    required a two column csv file containing pairs which you don’t want
-    to appear in the random matches. Ensure the file containing the
-    unwanted pairs ends with a new line.
--   Run the function `random_pairs`, which writes a new csv file called
-    `Round.csv` containing the random pairs, and updates or creates a
-    two column csv file called `unwantedpairs.csv`, containing the pairs
-    which have just been matched, in addition to any pre-existing
-    unwanted pairs.
--   **NB the output file `Round.csv` will be saved in your current
-    working directory.**
+    required a two column csv file containing pairs of names which you
+    don’t want to appear in the random matches.
+-   Run the `main` function, which writes a new csv file called
+    `randompairs.csv` containing the random pairs of names, and appends
+    to or creates a two column csv file called `unwantedpairs.csv`,
+    containing the pairs which have just been matched, in addition to
+    any pre-existing ones.
 
 ## Example
 
@@ -42,30 +39,19 @@ illustration.
 ``` r
 library(coffeeroulettepairs)
 
-# Specify the file containing the names to be paired up as a string 
+# Specify the path to the file containing a list of names in one column
 names <- system.file("extdata", "names.csv", package = "coffeeroulettepairs")
 
-# Specify the file containing the unwanted pairs as a string 
+# Specify the path to the file containing the unwanted pairs of names in two columns, one pair per row
 uwp <- system.file("extdata", "unwantedpairs.csv", package = "coffeeroulettepairs")
 
-# Run the random_pairs function. NB the output will be saved in your current working directory
-random_pairs(filename = names, unwantedpairs = uwp)
-#> Your current working directory is: /Users/marcosurace/R/coffee_roulette_pairs. 'Round.csv' will be saved there.
+# Run the main function. NB the output will be saved in your current working directory
+main(names_file = names, unwantedpairs_file = uwp)
 #> 
 #> ── Column specification ────────────────────────────────────────────────────────
 #> cols(
-#>   name = col_character()
+#>   X1 = col_character()
 #> )
-#> Warning in random_pairs(filename = names, unwantedpairs = uwp): An odd number of
-#> names has been provided! The first name was ignored, i.e.Jack Jones
-#> 
-#> ── Column specification ────────────────────────────────────────────────────────
-#> cols(
-#>   P1 = col_character(),
-#>   P2 = col_character()
-#> )
-#> 'Round.csv' was saved in your current working directory.
-#> The following file containing unwanted pairs was updated: /private/var/folders/h8/n52366yn01x_zz0cl39js88h0000gn/T/RtmpTBoERg/temp_libpath71b53d98b3b0/coffeeroulettepairs/extdata/unwantedpairs.csv
 #> 
 #> ── Column specification ────────────────────────────────────────────────────────
 #> cols(
