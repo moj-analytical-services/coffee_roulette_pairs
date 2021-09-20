@@ -16,7 +16,7 @@ once per round.
 You can install coffeeroulettepairs like so:
 
 ``` r
-devtools::install_github("moj-analytical-services/coffee_roulette_pairs")
+remotes::install_github("moj-analytical-services/coffee_roulette_pairs")
 ```
 
 ## Usage
