@@ -1,78 +1,24 @@
 utils::globalVariables(c("P1", "P2"))
 
-
-#' Randomly pair up a group of people
+#' Generate all possible unique random pairs from a set of names, with unwanted pairs removed.
 #'
-#' Given a list of people's names, pair them up with each other randomly so that each person appears once, and write the
-#' pairs to a file. Also, append these pairs to an additional file, so that they won't be matched
-#' again if the function is rerun.
+#' @param names A vector containing names as strings.
+#' @param unwantedpairs A two column data frame containing unwanted pairs of names as strings.
 #'
-#' @param filename csv file containing the list of people's names.
-#' @param unwantedpairs csv file containing pairs of names which you don't want to appear the next time the function is run.
-#'
-#' @return The function returns nothing, but saves a csv file containing the list of random pairs called `Round.csv`, and a csv
-#' file called `unwantedpairs.csv` containing pairs which you don't want to appear in future.
-#'
-#' @examples
-#' \dontrun{
-#' random_pairs(filename = 'names.csv', unwantedpairs = 'unwantedpairs.csv')
-#'}
-#'
+#' @return The function returns a two column data frame of random pairs of names as strings.
 #' @export
-
-random_pairs <- function(filename = NULL, unwantedpairs = NULL){
+#'
+generate_random_pairs <- function(names, unwantedpairs = NULL){
   
-  # Check filename and unwantedpairs are provided as strings
-  if (is.null(filename)) {
-    stop("Please supply the path to the csv file containing the list of coffee roulette participants")
-  }
-  
-  tryCatch(is.character(filename),
-           error = function(err){
-             err$message <- paste("Please provide the name of the csv file containing the list of coffee roulette participants as a string")
-             stop(err)
-           }
-  )
-  
-  if (!is.character(filename)) {
-    stop("Please supply the the path to the csv file containing the list of coffee roulette participants as a string")
-  }
-  
-  tryCatch(is.null(unwantedpairs) == FALSE & is.character(unwantedpairs),
-           error = function(err){
-             err$message <- paste("Please provide the name of the csv file containing the list of unwanted coffee roulette pairs as a string")
-             stop(err)
-           }
-  )
-  
-  # Prints current working directory
-  message(paste0("Your current working directory is: ", getwd(), ". 'Round.csv' will be saved there."))
-  
-  # Import the list of names
-  names <- readr::read_csv(filename, col_names = "name")
-  
-  # If not of even length, remove the first name from the list
-  if(nrow(names) %% 2 != 0){
-    warning(paste0("An odd number of names has been provided! The first name was ignored, i.e.", names[1,1]))
-    names <- dplyr::slice(names, -1)
-  }
-  
-  # Import the list of unwanted pairs
-  if (!is.null(unwantedpairs)) {
-    uwp <- readr::read_csv(unwantedpairs, col_names = c("P1", "P2"))
-  }
-  
-  ## MAIN BODY -----------------------------------------------------------------------------------------------------------
-  
-  # # Generate all unique pairs
-  pairs <- tibble::tibble("P1" = t(utils::combn(names$name, 2))[,1], "P2" = t(utils::combn(names$name, 2))[,2])
+  # Generate all unique pairs
+  pairs <- tibble::tibble("P1" = t(utils::combn(t(names), 2))[,1], "P2" = t(utils::combn(t(names), 2))[,2])
   
   # Remove unwanted pairs, if required
   if (!is.null(unwantedpairs)) {
     
     # Reverse the unwanted pairs and merge them with the unreversed ones
-    ruwp <- dplyr::rename(uwp, P2 = P1, P1 = P2)
-    uwp <- dplyr::bind_rows(uwp, ruwp)
+    ruwp <- dplyr::rename(unwantedpairs, P2 = P1, P1 = P2)
+    uwp <- dplyr::bind_rows(unwantedpairs, ruwp)
     
     # Remove the unwanted pairs
     pairs <- dplyr::anti_join(pairs, uwp, by=c("P1", "P2"))
@@ -81,67 +27,83 @@ random_pairs <- function(filename = NULL, unwantedpairs = NULL){
   # Randomise the pairs
   rpairs <- dplyr::slice_sample(pairs, n = nrow(pairs))
   
-  # Add the first pair to the store
-  store <- dplyr::slice_head(rpairs)
-  
-  # The number of pairs for a complete single round
-  ppr <- nrow(names)/2
-  
-  # Counter for the number of pairs added to store
-  k <- 1
-  
-  # Going though each pair in rpairs, only add it to the store if each name in the pair is not already present in any pair in the store
-  for (i in seq(nrow(rpairs))){
-    
-    if ((!rpairs$P1[i] %in% store$P1) & (!rpairs$P1[i] %in% store$P2) & (!rpairs$P2[i] %in% store$P1) & (!rpairs$P2[i] %in% store$P2)) {
-      
-      store <- dplyr::bind_rows(store, rpairs[i,1:2])
-      k <- k + 1
-    }
-    
-    # If the number of pairs for a complete round have been stored, write out the pairs, and break the loop
-    if (k == ppr){
-      
-      readr::write_csv(store, paste0("Round.csv"))
-      if (file.exists("Round.csv")) {
-        
-        message("'Round.csv' was saved in your current working directory.")
-        
-      } else {
-        
-        warning("'Round.csv' was not saved.")
-        
-      }
-      break
-      
-    }
-    
-  }
-  
-  # Update the list of unwanted pairs with those already generated
-  if (!is.null(unwantedpairs)) {
-    
-    readr::write_csv(store, unwantedpairs, append = TRUE)
-    message(paste0("The following file containing unwanted pairs was updated: ", unwantedpairs))
-    
-    # Check the unwanted pairs file has only two columns
-    uwp <- readr::read_csv(unwantedpairs, col_names = c("P1", "P2"))
-    if (ncol(uwp) != 2) {
-      warning("The updated file containing unwanted pairs does not have exactly two columns. Check that the original one ended with a new line.")
-    }
-    
-  } else {
-    
-    readr::write_csv(store, "unwantedpairs.csv", append = TRUE)
-    if (file.exists("unwantedpairs.csv")) {
-      
-      message("'unwantedpairs.csv' was saved in your current working directory.")
-      
-    } else{
-      
-      warning("'unwantedpairs.csv' was not saved.")
-    }
-    
-  }
+  return(rpairs)
   
 }
+
+#' Clean the random pairs of names to ensure each name only appears once.
+#'
+#' @param rpairs A two column data frame containing pairs of names as strings on each row.
+#'
+#' @return A data frame.
+#' @export
+#'
+clean_random_pairs <- function(rpairs){
+  
+  # Add the first pair in rpairs to the clean_rpairs
+  clean_rpairs <- dplyr::slice_head(rpairs)
+  
+  # Going though each pair in rpairs, only add it to the store if each name in 
+  # the pair is not present in any pair already in the store
+  for (i in seq(nrow(rpairs))){
+    
+    if ((!rpairs$P1[i] %in% clean_rpairs$P1) & (!rpairs$P1[i] %in% clean_rpairs$P2) & (!rpairs$P2[i] %in% clean_rpairs$P1) & (!rpairs$P2[i] %in% clean_rpairs$P2)) {
+      
+      clean_rpairs <- dplyr::bind_rows(clean_rpairs, rpairs[i,1:2])
+    }
+    
+  }
+  
+  return(clean_rpairs)
+  
+}
+
+#' From a list of names, and unwanted pairs of names if required, generate random pairs, 
+#' and save them to a collection of unwanted pairs to be avoided in future.
+#'
+#' @param names_file Path to a file containing a list of names in a single column.
+#' @param unwantedpairs_file Path to a file containing a list of unwanted pairs, with
+#' one name per column.
+#'
+#' @return Writes a csv file containing random pairs of names, and appends to or creates a file 
+#' containing unwanted pairs.
+#' @export
+#'
+#' @examples \dontrun{
+#' random_pairs(filename = 'names.csv', unwantedpairs = 'unwantedpairs.csv')
+#'}
+main <- function(names_file, unwantedpairs_file = NULL){
+  
+  # Error handling for NULL file names
+  if(is.null(names_file)){
+    
+    stop("Error: `file` must be a string.")
+  }
+  
+  # Import the file containing a list of names
+  names <- readr::read_csv(names_file, col_names = FALSE)
+  
+  # If it exists, import the file containing unwanted pairs, and generate the random pairs
+  if (!is.null(unwantedpairs_file)) {
+    
+    uwp <- readr::read_csv(unwantedpairs_file, col_names = c("P1", "P2"))
+    rpairs <- generate_random_pairs(names, uwp)
+  }
+  
+  else{
+    
+    rpairs <- generate_random_pairs(names)
+  }
+  
+  # Ensure each name appears only once in the list of pairs
+  clean_rpairs <- clean_random_pairs(rpairs)
+  
+  # Write pairs to a file
+  readr::write_csv(clean_rpairs, "randompairs.csv", col_names = FALSE)
+  
+  # Append the pairs to a file containing unwanted pair
+  readr::write_csv(clean_rpairs, "unwantedpairs.csv", append = TRUE)
+
+}
+
+  
