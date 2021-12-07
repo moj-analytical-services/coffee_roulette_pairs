@@ -83,17 +83,19 @@ main <- function(names_file, unwantedpairs_file = NULL){
   # Import the file containing a list of names
   names <- readr::read_csv(names_file, col_names = FALSE)
   
-  # If it exists, import the file containing unwanted pairs, and generate the random pairs
+  # If it exists, import the file containing unwanted pairs
   if (!is.null(unwantedpairs_file)) {
     
     uwp <- readr::read_csv(unwantedpairs_file, col_names = c("P1", "P2"))
-    rpairs <- generate_random_pairs(names, uwp)
   }
   
   else{
     
-    rpairs <- generate_random_pairs(names)
+    uwp <- NULL
   }
+  
+  # Generate the random pairs
+  rpairs <- generate_random_pairs(names, uwp)
   
   # Ensure each name appears only once in the list of pairs
   clean_rpairs <- clean_random_pairs(rpairs)
@@ -101,8 +103,13 @@ main <- function(names_file, unwantedpairs_file = NULL){
   # Write pairs to a file
   readr::write_csv(clean_rpairs, "randompairs.csv", col_names = FALSE)
   
-  # Append the pairs to a file containing unwanted pair
-  readr::write_csv(clean_rpairs, "unwantedpairs.csv", append = TRUE)
+  if (!is.null(unwantedpairs_file)) {
+    # Append the pairs to a file containing unwanted pair
+    readr::write_csv(clean_rpairs, unwantedpairs_file, append = TRUE)
+  } 
+  else{
+    readr::write_csv(clean_rpairs, "unwantedpairs.csv", append = TRUE)
+  }
 
 }
 
