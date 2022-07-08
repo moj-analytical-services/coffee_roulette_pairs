@@ -72,7 +72,7 @@ save_pairs <- function(names_file=NULL, unwantedpairs_file = NULL){
   message('These random pairs will be written to "randompairs.csv"')
   
   if(nrow(clean_rpairs) < n_unique_pairs){
-    stop('Fewer unique random pairs would be written to file than it is possible to generate from the names provided, ignoring unwanted pairs. This is due to the number
+    stop('Fewer unique random pairs would be written to file than it is possible to generate from the names provided if unwanted pairs are ignored. This is due to the number
     of unwanted pairs provided, constraining the number of combinations available. Please try running the function again to see if sufficient pairs are generated, 
     or alternatively remove some unwanted pairs.')
   }
