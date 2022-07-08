@@ -20,6 +20,7 @@ clean_random_pairs <- function(rpairs){
     }
 
   }
+  message(paste0(nrow(cleaned_rpairs), ' pairs remain after ensuring each name only appears once.'))
   
   return(cleaned_rpairs)
   

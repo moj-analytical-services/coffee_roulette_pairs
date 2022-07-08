@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 !inst/extdata/*
+renv/.gitignore
+renv/settings.dcf
+*.Rproj

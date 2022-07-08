@@ -11,7 +11,10 @@ utils::globalVariables(c("P1", "P2"))
 generate_random_pairs <- function(names, unwantedpairs = NULL){
   
   # Generate all unique pairs
-  pairs <- tibble::tibble("P1" = t(utils::combn(t(names), 2))[,1], "P2" = t(utils::combn(t(names), 2))[,2])
+  pairs <- utils::combn(t(names), 2)
+  # Convert to a 2 column data frame
+  pairs <- tibble::tibble("P1" = t(pairs)[,1], "P2" = t(pairs)[,2])
+  message(paste0(nrow(pairs), ' unique pairs can be generated from the names provided.'))
   
   # Remove unwanted pairs, if required
   if (!is.null(unwantedpairs)) {
@@ -22,6 +25,10 @@ generate_random_pairs <- function(names, unwantedpairs = NULL){
     uwp <- dplyr::bind_rows(unwantedpairs, ruwp)
     # Remove the unwanted pairs from the generated pairs
     pairs <- dplyr::anti_join(pairs, uwp, by=c("P1", "P2"))
+    message(paste0(nrow(pairs), ' unique pairs remain, after removing the unwanted pairs.'))
+  } 
+  else{
+    message('No unwanted pairs will be remvoed.')
   }
   
   # Randomise the pairs
