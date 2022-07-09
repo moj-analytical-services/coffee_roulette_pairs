@@ -25,13 +25,13 @@ generate_random_pairs <- function(names, unwantedpairs = NULL){
     uwp <- dplyr::bind_rows(unwantedpairs, ruwp)
     # Remove the unwanted pairs from the generated pairs
     pairs <- dplyr::anti_join(pairs, uwp, by=c("P1", "P2"))
-    message(paste0(nrow(pairs), ' unique pairs remain, after removing the unwanted pairs.'))
+    message(paste0(nrow(pairs), ' unique random pairs remain, after removing the unwanted pairs.'))
   } 
   else{
     message('No unwanted pairs will be remvoed.')
   }
   
-  # Randomise the pairs
+  # Randomize the pairs
   rpairs <- dplyr::slice_sample(pairs, n = nrow(pairs))
   
   return(rpairs)

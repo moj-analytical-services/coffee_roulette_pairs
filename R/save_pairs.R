@@ -12,7 +12,7 @@
 #' @examples \dontrun{
 #' save_pairs(names_file = 'names.csv', unwantedpairs_file = 'unwantedpairs.csv')
 #'}
-save_pairs <- function(names_file=NULL, unwantedpairs_file = NULL){
+save_pairs <- function(names_file=NULL, unwantedpairs_file = NULL, no_of_tries = 20){
   
   # Error handling for NULL file names
   if(is.null(names_file)){
@@ -23,7 +23,7 @@ save_pairs <- function(names_file=NULL, unwantedpairs_file = NULL){
   if(!file.exists(names_file)){
     stop(paste0('No file was found at the following path: ', names_file))
   } else{
-    message('The names file will be imported using the following path: "', names_file, '"')
+    message('The following path was given for the file containing the names of participants: "', names_file, '"')
   }
   
   # Import the file containing a list of names
@@ -44,7 +44,7 @@ save_pairs <- function(names_file=NULL, unwantedpairs_file = NULL){
   
   # Print warning if an odd number of names provided
   if(length(names) %% 2 != 0){
-    message(paste0('A odd number of names was provided (', length(names), '), so 1 person will not be matched (given no one should be matched more than once).'))
+    message(paste0('Since an odd number of names was provided (', length(names), '), 1 person will not be matched (given no one should be matched more than once).'))
   }
   
   # If it exists, import the file containing unwanted pairs
@@ -52,7 +52,7 @@ save_pairs <- function(names_file=NULL, unwantedpairs_file = NULL){
     
     if(file.exists(unwantedpairs_file)){
       uwp <- readr::read_csv(unwantedpairs_file, col_names = c("P1", "P2"), col_types = 'cc')
-      message(paste0('Unwanted pairs were imported from the following path: "', unwantedpairs_file, '" containing ', nrow(uwp), ' pair(s).'))
+      message(paste0('The following path was provided for the file containing unwanted pairs: "', unwantedpairs_file, '", which contains ', nrow(uwp), ' pair(s).'))
     }
     else{
       message(paste0('No unwanted pairs file was found at the following path: "', unwantedpairs_file, '"'))
@@ -63,22 +63,32 @@ save_pairs <- function(names_file=NULL, unwantedpairs_file = NULL){
     message('No unwanted pairs file was provided.')
   }
   
-  # Generate the random pairs
-  rpairs <- generate_random_pairs(names, uwp)
-  
-  # Ensure each name appears only once in the list of pairs
-  clean_rpairs <- clean_random_pairs(rpairs)
-  
-  message('These random pairs will be written to "randompairs.csv"')
+  # Re-randomize pairs until sufficient pairs to ensure everyone is matched is achieved
+  for(i in 1:no_of_tries){
+    
+    # Generate all random pairs, with the unwanted pairs removed
+    rpairs <- generate_random_pairs(names, uwp)
+    
+    # Ensure each name appears only once in the random pairs
+    clean_rpairs <- clean_random_pairs(rpairs)
+    
+    if (nrow(clean_rpairs) == n_unique_pairs){
+      message('Sufficiently many random pairs have been generated for every one to have a match (for an even number of names).')
+      break
+    }
+  }
   
   if(nrow(clean_rpairs) < n_unique_pairs){
-    stop('Fewer unique random pairs would be written to file than it is possible to generate from the names provided if unwanted pairs are ignored. This is due to the number
-    of unwanted pairs provided, constraining the number of combinations available. Please try running the function again to see if sufficient pairs are generated, 
-    or alternatively remove some unwanted pairs.')
+    stop(paste0(
+    'After ', no_of_tries, ' attempts, an insufficient number of random pairs has been generated for everyone to have a match. 
+    This is due to the number of unwanted pairs provided constraining the number of combinations available to build a round where everyone appears only once. 
+    Please try running the function again to see if sufficient pairs are generated, or alternatively remove some unwanted pairs.'))
   }
   
   # Write pairs to a file
   readr::write_csv(clean_rpairs, "randompairs.csv", col_names = FALSE)
+  
+  message('These random pairs have been written to "randompairs.csv"')
   
   # Update unwanted pairs with the matched pairs, and write to file
   uwp <- dplyr::bind_rows(uwp, clean_rpairs)
@@ -86,7 +96,7 @@ save_pairs <- function(names_file=NULL, unwantedpairs_file = NULL){
   # Append the pairs to a file containing unwanted pairs
   if (!is.null(unwantedpairs_file)) {
     readr::write_csv(uwp, unwantedpairs_file, col_names = FALSE)
-    message(paste0('The newly matched pairs were added to the unwanted pairs file, which now contains ', nrow(uwp), ' pairs.'))
+    message(paste0('The newly matched pairs were added to "', unwantedpairs_file, '", which now contains ', nrow(uwp), ' pairs.'))
   } 
   else{
     readr::write_csv(clean_rpairs, "unwantedpairs.csv", col_names = FALSE)
