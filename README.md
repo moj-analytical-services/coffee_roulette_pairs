@@ -53,7 +53,7 @@ If too many unwanted pairs are provided, the code might not find sufficient uniq
 1. The remaining pairs are randomized.
 1. Starting from the first pair in the list of all pairs, additional pairs are added to a new list, as long as neither name in the next pair already appears in the new list. This is to ensure each name 
 appears only once.
-1. This process is repeated a set number of times, given by the `no_of_tried` parameter, until enough random pairs are generated such that everyone is matched with some one else.
+1. This process is repeated a set number of times, given by the `no_of_tries` parameter, until enough random pairs are generated such that everyone is matched with some one else.
 1. The round of random pairs is written to a file, and those pairs are also added to an existing or new file containing unwanted pairs for future rounds (since they have already been matched). Otherwise, an error is printed if not enough pairs were generated for a round meeting the above criteria.
 
 ## Feedback

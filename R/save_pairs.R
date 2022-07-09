@@ -1,9 +1,11 @@
-#' From a list of names, and unwanted pairs of names if required, generate random pairs, 
-#' and save them to a collection of unwanted pairs to be avoided in future.
+#' From a list of names, and unwanted pairs of names if required, generate unique random pairs, 
+#' and save them to a list of unwanted pairs to be avoided in future.
 #'
 #' @param names_file Path to a file containing a list of names in a single column.
 #' @param unwantedpairs_file Path to a file containing a list of unwanted pairs, with
 #' one name per column.
+#' @param no_of_tries Integer. The number of times to re-randomize and generate a round of pairs,
+#' if insufficent have been generated.
 #'
 #' @return Writes a csv file containing random pairs of names, and appends to or creates a file 
 #' containing unwanted pairs.
