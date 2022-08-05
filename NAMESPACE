@@ -2,4 +2,4 @@
 
 export(clean_random_pairs)
 export(generate_random_pairs)
-export(main)
+export(save_pairs)

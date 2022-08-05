@@ -2,7 +2,7 @@
 % Please edit documentation in R/random_pairs.R
 \name{generate_random_pairs}
 \alias{generate_random_pairs}
-\title{Generate all possible unique random pairs from a set of names, with unwanted pairs removed.}
+\title{Generate all possible unique random pairs from a set of names, with unwanted pairs removed, if required}
 \usage{
 generate_random_pairs(names, unwantedpairs = NULL)
 }
@@ -15,5 +15,5 @@ generate_random_pairs(names, unwantedpairs = NULL)
 The function returns a two column data frame of random pairs of names as strings.
 }
 \description{
-Generate all possible unique random pairs from a set of names, with unwanted pairs removed.
+Generate all possible unique random pairs from a set of names, with unwanted pairs removed, if required
 }
